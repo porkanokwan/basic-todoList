@@ -2,7 +2,9 @@ function StatusFilter(props) {
     const handleChange = e => {
         const value = e.target.value;
         // update status only
-        props.setSearchText(prev => ({ ...prev, status: (!value ? value : value === 'true' ) } ))
+        // props.setSearchText(prev => ({ ...prev, status: (!value ? value : value === 'true' ) } ))
+
+        props.setSearchStatus(!value ? value : value === 'true');
     }
 
     return(

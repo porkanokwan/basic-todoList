@@ -16,8 +16,11 @@ const initialToDoList = [
 
 function App() {
   const [todoList, setTodoList] = useState(initialToDoList);
-  // ใช้วิธีต่างจาก branch main
-  const [searchText, setSearchText] = useState({text: '', status: ''});
+  // const [searchText, setSearchText] = useState({text: '', status: ''});
+  // หรือจะแยก state 2 อันก็ได้
+  const [searchText, setSearchText] = useState('');
+  const [searchStatus, setSearchStatus] = useState('');
+
   // รับแค่ title เพราะ id มีตัวส้รางให้แล้ว completed เราต้องกำหนดให้เป็น false ตั้งแต่แรกอยู่แล้ว เหลือแค่สิ่งที่พิมพ์เข้ามาที่ต้องรับ
   const createTodo = (title) => {
     const nextTodo = [{id: uuidv4(), title: title, completed: false}, ...todoList];
@@ -56,19 +59,21 @@ function App() {
   //   ele.completed = value.completed;
   //   setTodoList(nextTodo)
   // }
-  const updateTodo = (id, { id: objId, ...value}) => {
+  // const updateTodo = (id, { id: objId, ...value}) => {
+  const updateTodo = (id, value) => {
     let idx = todoList.findIndex(item => item.id === id);
     const nextTodo = [...todoList];
     if(idx !== -1) {
       nextTodo[idx] = {...nextTodo[idx], ...value};
     }
-    setTodoList(nextTodo)
+    setTodoList(nextTodo);
   }
 
   const pendingTodoList = todoList.filter(item => !item.completed);
 
   // ใส่ toLowerCase() ให้เป็นเคส in-sensitive
-  const filterTodoList = todoList.filter(item => item.title.toLowerCase().includes(searchText.text.toLowerCase()) && (searchText.status === '' || item.completed === searchText.status ) );
+  // const filterTodoList = todoList.filter(item => item.title.toLowerCase().includes(searchText.text.toLowerCase()) && (searchText.status === '' || item.completed === searchText.status ) );
+  const filterTodoList = todoList.filter(item => item.title.toLowerCase().includes(searchText.toLowerCase()) && (searchStatus === '' || item.completed === searchStatus ) );
 
   
 
@@ -76,7 +81,8 @@ function App() {
     <div className="container">
       <div className='mt-5 mx-auto mw-xs'>
         <AddTodo createTodo={createTodo}/>
-        <SearchBar searchText={searchText} setSearchText={setSearchText}/>
+        {/* <SearchBar searchText={searchText} setSearchText={setSearchText}/> */}
+        <SearchBar searchText={searchText} setSearchText={setSearchText} searchStatus={searchStatus} setSearchStatus={setSearchStatus}/>
         <RemainingMessage pending={pendingTodoList.length} total={todoList.length}/>
         {/* <TodoList todoList={todoList} deleteTodo={deleteTodo} toggleTodo={toggleTodo}/> */}
         <TodoList todoList={filterTodoList} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
