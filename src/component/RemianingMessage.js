@@ -1,8 +1,7 @@
-function RemainingMessage({pending, total}) {
-    // const {pending, total} = props;
+function RemainingMessage() {
     return(
         <div className="mt-4 py-3 text-center bg-dark text-white">
-            <span>{pending} of {total} Task Remain</span>
+            <span>1 of 2 Task Remain</span>
         </div>
     )
 }
