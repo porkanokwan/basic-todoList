@@ -1,30 +1,59 @@
-import { useContext, useState } from "react";
+import { Component, useContext, useState } from "react";
 import { TodoListContext } from "../context/TodoListContext";
 import EditTodo from "./EditTodo";
 
-function TodoItem(props) {
-    const [isEdit, setIsEdit] = useState(false);
-    const {updateTodo, deleteTodo} = useContext(TodoListContext);
-    const {item: {id, completed, title}} = props;
+// function TodoItem(props) {
+//     const [isEdit, setIsEdit] = useState(false);
+//     const {updateTodo, deleteTodo} = useContext(TodoListContext);
+//     const {item: {id, completed, title}} = props;
 
-    return(
+//     return(
+//         <li className={`list-group-item d-flex justify-content-between align-items-center py-3 bd-callout bd-callout-${completed ? 'success' : 'warning'}`}>
+//             {isEdit ? <EditTodo item={props.item} updateTodo={updateTodo} setIsEdit={setIsEdit} /> :
+//             <>
+//                 <span onClick={() => setIsEdit(prev => !prev)}>{title}</span>
+//                 <div className="btn-group">
+//                     {/* <button className="btn btn-info rounded-0" onClick={() => updateTodo(id, {title: title, completed: !completed})}> */}
+//                     <button className="btn btn-info rounded-0" onClick={() => updateTodo(id, {completed: !completed})}>
+//                         <i className={`fa-solid fa-toggle-${completed ? 'on' : 'off'}`}></i>
+//                     </button>
+//                     <button className="btn btn-danger rounded-0" onClick={() => deleteTodo(id)}>
+//                         <i className="fa-regular fa-trash-can"></i>
+//                     </button>
+//                 </div>
+//              </> 
+//             }
+//         </li>
+//     )
+// }
+
+class TodoItem extends Component {
+    state = { isEdit: false }
+
+    closeEdit = () => {
+        this.setState({ isEdit: false })
+    }
+
+    render() {
+        const {item: {id, title, completed}, deleteTodo, updateTodo} = this.props;
+        return (
         <li className={`list-group-item d-flex justify-content-between align-items-center py-3 bd-callout bd-callout-${completed ? 'success' : 'warning'}`}>
-            {isEdit ? <EditTodo item={props.item} updateTodo={updateTodo} setIsEdit={setIsEdit} /> :
+            {this.state.isEdit ? <EditTodo closeEdit={this.closeEdit} todo={this.props.item} updateTodo={updateTodo}/> :
             <>
-                <span onClick={() => setIsEdit(prev => !prev)}>{title}</span>
+                <span onClick={() => this.setState({ isEdit: true })}>{title}</span>
                 <div className="btn-group">
-                    {/* <button className="btn btn-info rounded-0" onClick={() => updateTodo(id, {title: title, completed: !completed})}> */}
-                    <button className="btn btn-info rounded-0" onClick={() => updateTodo(id, {completed: !completed})}>
+                    <button className="btn btn-info rounded-0" onClick={() => updateTodo(id, {title: title, completed: !completed})}>
                         <i className={`fa-solid fa-toggle-${completed ? 'on' : 'off'}`}></i>
                     </button>
                     <button className="btn btn-danger rounded-0" onClick={() => deleteTodo(id)}>
                         <i className="fa-regular fa-trash-can"></i>
                     </button>
                 </div>
-             </> 
-            }
+            </>
+            } 
         </li>
-    )
+        )
+    }
 }
 
 export default TodoItem;
